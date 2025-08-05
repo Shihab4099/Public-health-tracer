@@ -2,102 +2,153 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Submit Report - Pamoja Health Tracker</title>
+  <title>Submit Health Report</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      background-color: #f4f6f8;
+    }
+
+    header {
+      background-color: #007bff;
       padding: 20px;
-      max-width: 600px;
-      margin: auto;
+      text-align: center;
+      color: white;
+    }
+
+    nav {
+      background-color: #0056b3;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
       text-align: center;
-      color: #007BFF;
+      color: #007bff;
+      margin-bottom: 20px;
     }
 
     label {
       display: block;
+      margin-bottom: 5px;
       margin-top: 15px;
+      font-weight: bold;
     }
 
     input, textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 6px;
       box-sizing: border-box;
+      margin-bottom: 10px;
     }
 
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #007BFF;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 16px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #0056b3;
+      background-color: #0056b3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #e9ecef;
+      margin-top: 40px;
+      color: #555;
     }
   </style>
 </head>
 <body>
 
-  <h2>Submit Health Report</h2>
+  <header>
+ <h>Public Health Tracker</h1>
+  </header>
 
-  <form id="reportForm">
-    <label for="reporter">Your Name</label>
-    <input type="text" id="reporter" required>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="view-reports.html">View Report</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
-    <label for="phone">Phone Number</label>
-    <input type="text" id="phone" required>
+  <div class="container">
+    <h2>Submit Health Report</h2>
 
-    <label for="location">Location</label>
-    <input type="text" id="location" required>
+    <form id="reportForm">
+      <label for="reporter">Your Name</label>
+      <input type="text" id="reporter" required>
 
-    <label for="message">Report Details</label>
-    <textarea id="message" rows="5" required></textarea>
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" required>
 
-    <button type="submit">Submit Report</button>
-  </form>
+      <label for="location">Address</label>
+      <input type="text" id="location" required>
+
+      <label for="message">Report Details</label>
+      <textarea id="message" rows="5" required></textarea>
+
+      <button type="submit">Submit Report</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 Public Health Tracker
+  </footer>
 
   <script>
-    // JS ya kuhakikisha submit haifanyi refresh na localStorage inahifadhi vizuri
     document.getElementById("reportForm").addEventListener("submit", function (e) {
-      e.preventDefault(); // Lazima!
+      e.preventDefault();
 
-      // Chukua values
       const reporter = document.getElementById("reporter").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const location = document.getElementById("location").value.trim();
       const message = document.getElementById("message").value.trim();
       const date = new Date().toLocaleString();
 
-      // Hakiki
       if (!reporter || !phone || !location || !message) {
         alert("Please fill in all fields.");
         return;
       }
 
-      // Tengeneza object
       const newReport = { reporter, phone, location, date, message };
-
-      // Hifadhi kwenye localStorage
-      let reports = JSON.parse(localStorage.getItem("reports") || "[]");
+      const reports = JSON.parse(localStorage.getItem("reports") || "[]");
       reports.push(newReport);
       localStorage.setItem("reports", JSON.stringify(reports));
 
-      // Notification na redirection
       alert("Report submitted successfully!");
-
-      // Hii inaondoa fields na kupeleka user kwenye view page
       window.location.href = "view-reports.html";
     });
   </script>
