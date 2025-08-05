@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>View Reports - Pamoja Health Tracker</title>
+  <title>View Reports - Public Health Tracker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -86,50 +86,49 @@
   </table>
 
   <footer>
-    &copy; 2025 Pamoja Health Tracker
+    &copy; 2025 Public Health Tracker
   </footer>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const tableBody = document.querySelector("#reportsTable tbody");
-      const reports = JSON.parse(localStorage.getItem("reports") || "[]");
 
-      if (reports.length === 0) {
+      try {
+        const reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+        if (Array.isArray(reports) && reports.length > 0) {
+          reports.forEach((report) => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+              <td>${report.reporter}</td>
+              <td>${report.phone}</td>
+              <td>${report.location}</td>
+              <td>${report.date}</td>
+              <td>${report.message}</td>
+            `;
+
+            tableBody.appendChild(row);
+          });
+        } else {
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+          cell.colSpan = 5;
+          cell.textContent = "No reports found.";
+          cell.style.textAlign = "center";
+          row.appendChild(cell);
+          tableBody.appendChild(row);
+        }
+      } catch (error) {
+        console.error("Failed to load reports:", error);
         const row = document.createElement("tr");
         const cell = document.createElement("td");
         cell.colSpan = 5;
-        cell.textContent = "No reports found.";
+        cell.textContent = "Error loading reports.";
         cell.style.textAlign = "center";
         row.appendChild(cell);
         tableBody.appendChild(row);
-        return;
       }
-
-      reports.forEach((report) => {
-        const row = document.createElement("tr");
-
-        const name = document.createElement("td");
-        name.textContent = report.reporter;
-        row.appendChild(name);
-
-        const phone = document.createElement("td");
-        phone.textContent = report.phone;
-        row.appendChild(phone);
-
-        const location = document.createElement("td");
-        location.textContent = report.location;
-        row.appendChild(location);
-
-        const date = document.createElement("td");
-        date.textContent = report.date;
-        row.appendChild(date);
-
-        const message = document.createElement("td");
-        message.textContent = report.message;
-        row.appendChild(message);
-
-        tableBody.appendChild(row);
-      });
     });
   </script>
 </body>
