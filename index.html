@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pamoja Health Tracker - Login</title>
+  <title>Public Health Tracker - Login</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -95,12 +95,13 @@
 <body>
 
   <header>
-    <img src="https://via.placeholder.com/60" alt="Logo" />
-    <h1>Public Health Tracker</h1>
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Public Health Logo" />
+    <h1>Pamoja Health Tracker</h1>
   </header>
 
   <main>
     <div class="card">
+      <h2>Login</h2>
       <div class="error" id="error-msg">Please enter email and password</div>
       <div class="input-group">
         <label for="email">Email</label>
@@ -115,7 +116,7 @@
   </main>
 
   <footer>
-    &copy; 2025 Pamoja Health Tracker. All rights reserved.
+    &copy; 2025 Public Health Tracker. All rights reserved.
   </footer>
 
   <script>
@@ -128,8 +129,7 @@
         errorMsg.style.display = "block";
       } else {
         errorMsg.style.display = "none";
-        alert("Login successful! (You can redirect to another page here)");
-        // window.location.href = "dashboard.html"; // example
+        window.location.href = "report.html"; // ✅ Redirect to report page
       }
     }
   </script>
