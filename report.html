@@ -2,181 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Report Health Issue - Public Health Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Report - Pamoja Health Tracker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f0f4f8;
-      color: #333;
-    }
-    nav {
-      background-color: #007bff;
-      padding: 15px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: white;
-    }
-    nav .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
-    nav .links a {
-      color: white;
-      text-decoration: none;
-      margin-left: 20px;
-      font-weight: bold;
-      font-size: 16px;
-    }
-    nav .links a:hover {
-      text-decoration: underline;
-    }
-    .container {
+      background-color: #f4f4f4;
+      padding: 20px;
       max-width: 600px;
-      margin: 40px auto;
-      background: white;
-      padding: 25px 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      margin: auto;
     }
-    h1 {
+
+    h2 {
       text-align: center;
-      margin-bottom: 25px;
+      color: #007BFF;
     }
+
     label {
       display: block;
       margin-top: 15px;
-      font-weight: bold;
     }
-    input[type="text"],
-    input[type="tel"],
-    input[type="date"],
-    textarea {
-      width: 105%;
-      max-width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-      resize: vertical;
-    }
-    button {
-      margin-top: 25px;
+
+    input, textarea {
       width: 100%;
-      background-color: #007bff;
-      border: none;
-      padding: 14px;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
     }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .message {
+
+    button {
       margin-top: 20px;
-      font-weight: bold;
-      color: green;
-      text-align: center;
-    }
-    footer {
-      background-color: #007bff;
+      padding: 10px 20px;
+      background: #007BFF;
       color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 40px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <div class="logo">Public- Health Tracker</div>
-    <div class="links">
-      <a href="home.html">Home</a>
-      <a href="report.html">Report</a>
-      <a href="About.html">About</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
+  <h2>Submit Health Report</h2>
 
-  <div class="container">
-    <h1>Report a Health Issue</h1>
-    <form id="reportForm">
-      <label for="reporterName">Reporter Name</label>
-      <input type="text" id="reporterName" name="reporterName" placeholder="Your full name" required>
+  <form id="reportForm">
+    <label for="reporter">Your Name</label>
+    <input type="text" id="reporter" required>
 
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" placeholder="+255 7XX XXX XXX" required pattern="^\+?\d{9,15}$" title="Enter valid phone number">
+    <label for="phone">Phone Number</label>
+    <input type="text" id="phone" required>
 
-      <label for="date">Date</label>
-      <input type="date" id="date" name="date" required>
+    <label for="location">Location</label>
+    <input type="text" id="location" required>
 
-      <label for="location">Address</label>
-      <input type="text" id="location" name="location" placeholder="Where the issue occurred" required>
+    <label for="message">Report Details</label>
+    <textarea id="message" rows="5" required></textarea>
 
-      <label for="details">Additional Details</label>
-      <textarea id="details" name="details" rows="5" placeholder="Describe the issue" required></textarea>
-
-      <button type="submit">Submit Report</button>
-    </form>
-    <div class="message" id="msg"></div>
-  </div>
-
-  <footer>
-    &copy; 2025 Public Health Tracker. All rights reserved.
-  </footer>
+    <button type="submit">Submit Report</button>
+  </form>
 
   <script>
-    const form = document.getElementById('reportForm');
-    const msg = document.getElementById('msg');
+    // JS ya kuhakikisha submit haifanyi refresh na localStorage inahifadhi vizuri
+    document.getElementById("reportForm").addEventListener("submit", function (e) {
+      e.preventDefault(); // Lazima!
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+      // Chukua values
+      const reporter = document.getElementById("reporter").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const date = new Date().toLocaleString();
 
-      // Collect form data
-      const reporterName = form.reporterName.value.trim();
-      const phone = form.phone.value.trim();
-      const date = form.date.value;
-      const location = form.location.value.trim();
-      const details = form.details.value.trim();
-
-      // Validate phone pattern manually (in case pattern attr fails)
-      const phoneRegex = /^\+?\d{9,15}$/;
-      if (!phoneRegex.test(phone)) {
-        alert('Please enter a valid phone number (9 to 15 digits, can start with +).');
+      // Hakiki
+      if (!reporter || !phone || !location || !message) {
+        alert("Please fill in all fields.");
         return;
       }
 
-      // Prepare report object
-      const report = {
-        reporterName,
-        phone,
-        date,
-        location,
-        details,
-        submittedAt: new Date().toISOString()
-      };
+      // Tengeneza object
+      const newReport = { reporter, phone, location, date, message };
 
-      // Save report to localStorage (append)
-      let reports = JSON.parse(localStorage.getItem('healthReports')) || [];
-      reports.push(report);
-      localStorage.setItem('healthReports', JSON.stringify(reports));
+      // Hifadhi kwenye localStorage
+      let reports = JSON.parse(localStorage.getItem("reports") || "[]");
+      reports.push(newReport);
+      localStorage.setItem("reports", JSON.stringify(reports));
 
-      // Show success message & reset form
-      msg.textContent = 'Report submitted successfully!';
-      form.reset();
+      // Notification na redirection
+      alert("Report submitted successfully!");
 
-      // Hide message after 4 seconds
-      setTimeout(() => {
-        msg.textContent = '';
-      }, 4000);
+      // Hii inaondoa fields na kupeleka user kwenye view page
+      window.location.href = "view-reports.html";
     });
   </script>
 
