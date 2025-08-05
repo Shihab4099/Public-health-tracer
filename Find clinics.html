@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zanzibar Health Facilities Map with Nearest Facility</title>
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    .card {
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .card:hover {
+      background-color: #e1e8f7;
+    }
+
+    #map {
+      height: 450px;
+      margin: 40px auto;
+      border-radius: 8px;
+      box-shadow: 0 3px 8px rgb(0 0 0 / 0.2);
+    }
+
+    .nearest-info {
+      background: #dff0d8;
+      border: 1px solid #a3c293;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #3c763d;
+    }
+
+    a.details-link {
+      color: #2980b9;
+      text-decoration: none;
+    }
+
+    a.details-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Zanzibar Health Facilities</h1>
+
+  <div id="nearestFacility" class="nearest-info">
+    Loading your location and calculating nearest health facility...
+  </div>
+
+  <div id="facilityList">
+    <!-- Vituo vya afya vitajazwa hapa na JS -->
+  </div>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // Orodha ya vituo vya afya Zanzibar
+    const clinics = [
+      { name: "Mnazi Mmoja Hospital", location: "Unguja Mjini", phone: "+255 777 111 111", lat: -6.1640, lng: 39.1964, page: "mnazi-mmoja.html" },
+      { name: "Kizimkazi Health Center", location: "Kusini Unguja", phone: "+255 777 222 222", lat: -6.3575, lng: 39.2405, page: "kizimkazi.html" },
+      { name: "Micheweni Dispensary", location: "Kaskazini Pemba", phone: "+255 777 333 333", lat: -5.2600, lng: 39.7790, page: "micheweni.html" },
+      { name: "Makunduchi Hospital", location: "Kusini Unguja", phone: "+255 777 444 444", lat: -6.3803, lng: 39.2801, page: "makunduchi.html" },
+      { name: "Wete Clinic", location: "Kaskazini Pemba", phone: "+255 777 555 555", lat: -5.0640, lng: 39.7343, page: "wete.html" },
+      { name: "Chake Chake Health Center", location: "Chake Chake, Pemba", phone: "+255 777 666 666", lat: -5.2501, lng: 39.7156, page: "chake-chake.html" },
+    ];
+
+    // Reference kwa divs
+    const listDiv = document.getElementById('facilityList');
+    const nearestDiv = document.getElementById('nearestFacility');
+
+    // Fungua page ya kituo kwa kubonyeza card
+    function openFacilityPage(page) {
+      window.location.href = page;
+    }
+
+    // Jaza list ya vituo kama cards
+    function renderFacilityList() {
+      clinics.forEach(c => {
+        const card = document.createElement('div');
+        card.className = "card";
+        card.innerHTML = `
+          <strong>${c.name}</strong><br/>
+          Location: ${c.location}<br/>
+          Phone: ${c.phone}
+        `;
+        card.onclick = () => openFacilityPage(c.page);
+        listDiv.appendChild(card);
+      });
+    }
+
+    // Fungua ramani na markers
+    function initMap(userLatLng = null) {
+      // Default center: Unguja Zanzibar
+      const mapCenter = userLatLng || [-6.1640, 39.1964];
+      const map = L.map('map').setView(mapCenter, 10);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add markers for clinics
+      clinics.forEach(clinic => {
+        const marker = L.marker([clinic.lat, clinic.lng]).addTo(map);
+        const popupContent = `
+          <b>${clinic.name}</b><br/>
+          Location: ${clinic.location}<br/>
+          Phone: ${clinic.phone}<br/>
+          <a href="${clinic.page}" target="_blank">See details</a>
+        `;
+        marker.bindPopup(popupContent);
+      });
+
+      return map;
+    }
+
+    // Hesabu umbali kati ya latlng mbili (Haversine formula)
+    function getDistance(lat1, lng1, lat2, lng2) {
+      function toRad(x) {
+        return x * Math.PI / 180;
+      }
+
+      const R = 6371; // Radius ya dunia km
+      const dLat = toRad(lat2 - lat1);
+      const dLng = toRad(lng2 - lng1);
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const d = R * c;
+      return d; // umbali km
+    }
+
+    // Pata kituo kilicho karibu zaidi kwa kuangalia umbali na userLatLng
+    function findNearestFacility(userLatLng) {
+      let nearest = null;
+      let nearestDistance = Infinity;
+      clinics.forEach(clinic => {
+        const dist = getDistance(userLatLng.lat, userLatLng.lng, clinic.lat, clinic.lng);
+        if (dist < nearestDistance) {
+          nearestDistance = dist;
+          nearest = clinic;
+          nearest.distance = dist;
+        }
+      });
+      return nearest;
+    }
+
+    // Ongeza marker ya kituo kilicho karibu zaidi na popup
+    function addNearestMarker(map, facility) {
+      const greenIcon = L.icon({
+        iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png",
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+      });
+
+      const marker = L.marker([facility.lat, facility.lng], { icon: greenIcon }).addTo(map);
+      marker.bindPopup(`
+        <b>Nearest Facility:</b><br/>
+        <b>${facility.name}</b><br/>
+        Location: ${facility.location}<br/>
+        Phone: ${facility.phone}<br/>
+        Distance: ${facility.distance.toFixed(2)} km<br/>
+        <a href="${facility.page}" target="_blank">See details</a>
+      `).openPopup();
+
+      // Move map view to nearest marker with zoom closer
+      map.setView([facility.lat, facility.lng], 13);
+    }
+
+    // Main function kuanza
+    function startApp() {
+      renderFacilityList();
+
+      if (!navigator.geolocation) {
+        nearestDiv.textContent = "Browser yako haiku-support location. Huwezi kupata kituo karibu zaidi.";
+        initMap(); // Init map default
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLatLng = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          // Pata kituo karibu zaidi
+          const nearestFacility = findNearestFacility(userLatLng);
+
+          // Update info
+          nearestDiv.innerHTML = `
+            Kituo cha afya kilicho karibu zaidi na wewe ni: <strong>${nearestFacility.name}</strong><br/>
+            Mahali: ${nearestFacility.location}<br/>
+            Umbali: ${nearestFacility.distance.toFixed(2)} km<br/>
+            <a href="${nearestFacility.page}" target="_blank" class="details-link">Tazama Maelezo Zaidi</a>
+          `;
+
+          // Init ramani na user location katikati
+          const map = initMap([userLatLng.lat, userLatLng.lng]);
+
+          // Add marker ya user location (blue)
+          const userMarker = L.circleMarker([userLatLng.lat, userLatLng.lng], {
+            radius: 8,
+            color: '#007bff',
+            fillColor: '#007bff',
+            fillOpacity: 0.8,
+          }).addTo(map).bindPopup("Wewe uko hapa").openPopup();
+
+          // Add marker ya kituo karibu zaidi (green)
+          addNearestMarker(map, nearestFacility);
+        },
+        (error) => {
+          nearestDiv.textContent = "Hatuwezi kupata location yako. Tafadhali ruhusu location kwenye browser.";
+          initMap(); // Init map default bila user location
+        }
+      );
+    }
+
+    // Anza app
+    startApp();
+  </script>
+</body>
+</html>
