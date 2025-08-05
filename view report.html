@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>View Reports - Public Health Tracker</title>
+  <title>View Reports - Pamoja Health Tracker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,16 +11,24 @@
       background-color: #f4f4f4;
     }
 
-    nav {
+    header {
       background-color: #007BFF;
-      padding: 1rem;
+      padding: 20px;
       text-align: center;
+      color: white;
+    }
+
+    nav {
+      background-color: #0056b3;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      margin: 0 15px;
+      margin: 0 20px;
       font-weight: bold;
     }
 
@@ -66,12 +74,17 @@
 </head>
 <body>
 
+  <header>
+    <h1>Pamoja Health Tracker</h1>
+  </header>
+
   <nav>
     <a href="home.html">Home</a>
     <a href="view-reports.html" class="active">View Reports</a>
   </nav>
 
   <h2>All Submitted Reports</h2>
+
   <table id="reportsTable">
     <thead>
       <tr>
@@ -86,7 +99,7 @@
   </table>
 
   <footer>
-    &copy; 2025 Public Health Tracker
+    &copy; 2025 Pamoja Health Tracker
   </footer>
 
   <script>
@@ -94,12 +107,12 @@
       const tableBody = document.querySelector("#reportsTable tbody");
 
       try {
-        const reports = JSON.parse(localStorage.getItem("reports")) || [];
+        const data = localStorage.getItem("reports");
+        const reports = data ? JSON.parse(data) : [];
 
         if (Array.isArray(reports) && reports.length > 0) {
           reports.forEach((report) => {
             const row = document.createElement("tr");
-
             row.innerHTML = `
               <td>${report.reporter}</td>
               <td>${report.phone}</td>
@@ -107,7 +120,6 @@
               <td>${report.date}</td>
               <td>${report.message}</td>
             `;
-
             tableBody.appendChild(row);
           });
         } else {
@@ -120,16 +132,17 @@
           tableBody.appendChild(row);
         }
       } catch (error) {
-        console.error("Failed to load reports:", error);
+        console.error("Error loading reports:", error);
         const row = document.createElement("tr");
         const cell = document.createElement("td");
         cell.colSpan = 5;
-        cell.textContent = "Error loading reports.";
+        cell.textContent = "Failed to load reports.";
         cell.style.textAlign = "center";
         row.appendChild(cell);
         tableBody.appendChild(row);
       }
     });
   </script>
+
 </body>
 </html>
