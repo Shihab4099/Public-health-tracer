@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mnazi Mmoja Hospital</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #007BFF;
+    }
+    #map {
+      height: 300px;
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+    .info {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mnazi Mmoja Hospital</h1>
+
+  <div id="map"></div>
+
+  <div class="info">
+    <h2>Service Available</h2>
+    <ul>
+      <li>Emergence Services</li>
+      <li>Advanced Surgery Services</li>
+      <li>Intensive Care Unit (ICU)</li>
+      <li>Radiology and Imaging X-ray ,ultrasoud ,CT scan</li>
+      <li>Diagnostic Laboratory Services</li>
+    </ul>
+
+    <h2>Day and time open for service</h2>
+    <p>Jumatatu - Ijumaa: 7:30 AM - 5:00 PM</p>
+    <p>Jumamosi: 8:00 AM - 12:00 PM</p>
+
+    <h2>Communication</h2>
+    <p>Simu: +255 712 345 678</p>
+    <p>Email: info@mnazimmoja.go.tz</p>
+  </div>
+
+  <a href="clinics.html" class="back-btn">← Rudi kwenye Ramani</a>
+
+  <script>
+    const map = L.map('map').setView([-6.1659, 39.2026], 15); // Location ya Mnazi Mmoja
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([-6.1659, 39.2026]).addTo(map)
+      .bindPopup('Mnazi Mmoja Hospital')
+      .openPopup();
+  </script>
+
+</body>
+</html>
