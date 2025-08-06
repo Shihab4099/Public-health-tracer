@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wete Clinic</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #007BFF;
+    }
+    #map {
+      height: 300px;
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+    .info {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Wete Clinic</h1>
+
+  <div id="map"></div>
+
+  <div class="info">
+    <h2>Services Available</h2>
+    <ul>
+      <li>Primary health and care services</li>
+      <li>Maternal and child services</li>
+      <li>Immunezation service </li>
+      <li>Minor surgical procedure</li>
+    </ul>
+
+    <h2>Day and time open for services</h2>
+    <p>Jumatatu - Ijumaa: 8:00 AM - 4:30 PM</p>
+    <p>Jumamosi: 8:00 AM - 12:00 PM</p>
+
+    <h2>Communication</h2>
+    <p>Simu: +255 777 555 555</p>
+    <p>Email: info@wete.go.tz</p>
+  </div>
+
+  <a href="clinics.html" class="back-btn">← Rudi kwenye Ramani</a>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([-5.0640, 39.7343], 15); // Wete location
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([-5.0640, 39.7343]).addTo(map)
+      .bindPopup('Wete Clinic')
+      .openPopup();
+  </script>
+
+</body>
+</html>
