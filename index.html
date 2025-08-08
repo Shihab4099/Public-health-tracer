@@ -1,139 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Public Health Tracker - Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pamoja Health Tracker</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f0f4f8;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      color: #333;
     }
 
     header {
-      background: #007bff;
-      color: white;
-      text-align: center;
-      padding: 20px 10px;
-    }
-
-    header img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: #0066cc;
       padding: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .card h2 {
-      margin-bottom: 20px;
+      color: white;
       text-align: center;
     }
 
-    .input-group {
-      margin-bottom: 15px;
+    nav {
+      margin-top: 10px;
     }
 
-    .input-group label {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .error {
-      color: red;
-      font-size: 0.9em;
-      margin-bottom: 10px;
-      display: none;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
+    nav a {
       color: white;
-      border: none;
-      border-radius: 5px;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    #hero {
+      padding: 60px 20px;
+      background-color: #e6f2ff;
+      text-align: center;
+    }
+
+    #hero h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: #0066cc;
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
       font-size: 16px;
-      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background-color: #004c99;
+    }
+
+    section {
+      padding: 40px 20px;
+    }
+
+    #features ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #features li {
+      background-color: #ffffff;
+      margin: 10px 0;
+      padding: 15px;
+      border-left: 5px solid #0066cc;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
 
     footer {
+      background-color: #0066cc;
+      color: white;
       text-align: center;
       padding: 15px;
-      background: #ddd;
-      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <img src="https://via.placeholder.com/60" alt="Logo" />
-    <h1>Public Health Tracker</h1>
+    <h1>Pamoja Health Tracker</h1>
+    <nav>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="#features">Vipengele</a>
+      <a href="#contact">Wasiliana</a>
+    </nav>
   </header>
 
-  <main>
-    <div class="card">
-      <h2>Login</h2>
-      <div class="error" id="error-msg">Please enter email and password</div>
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your email" />
-      </div>
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" />
-      </div>
-      <button onclick="handleLogin()">Login</button>
-    </div>
-  </main>
+  <section id="hero">
+    <h2>Tunakusaidia kufuatilia afya ya jamii yako</h2>
+    <p>Ripoti matatizo ya kiafya, tafuta huduma za karibu, na shiriki taarifa muhimu kwa haraka na salama.</p>
+    <a href="signup.html" class="btn">Anza Sasa</a>
+  </section>
+
+  <section id="features">
+    <h2>Vipengele Muhimu</h2>
+    <ul>
+      <li>📍 Ramani za vituo vya afya</li>
+      <li>📊 Ufuatiliaji wa matukio ya afya</li>
+      <li>📝 Ripoti ya dalili za maradhi</li>
+      <li>🔔 Arifa za mlipuko wa magonjwa</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Wasiliana Nasi</h2>
+    <p>Email: pamojahealth@app.com</p>
+    <p>Simu: +255 712 345 678</p>
+  </section>
 
   <footer>
-    &copy; 2025 Public Health Tracker. Health is important.
+    <p>&copy; 2025 Pamoja Health Tracker. Haki zote zimehifadhiwa.</p>
   </footer>
-
-  <script>
-    function handleLogin() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const errorMsg = document.getElementById("error-msg");
-
-      if (!email || !password) {
-        errorMsg.style.display = "block";
-      } else {
-        errorMsg.style.display = "none";
-        // Redirect to home.html after successful login
-        window.location.href = "home.html";
-      }
-    }
-  </script>
 
 </body>
 </html>
