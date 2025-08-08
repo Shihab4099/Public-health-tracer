@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Singup - Pamoja Health Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      color: #333;
+    }
+
+    header {
+      background-color: #0066cc;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .signup-container {
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0066cc;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background-color: #0066cc;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #004c99;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .login-link a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    footer {
+      background-color: #0066cc;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pamoja Health Tracker</h1>
+    <nav>
+      <a href="index.html">home</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="signup-container">
+    <h2>Signup</h2>
+    <form id="signupForm">
+      <label for="fullname">full name</label>
+      <input type="text" id="fullname" name="fullname" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="confirm">Approval password</label>
+      <input type="password" id="confirm" name="confirm" required>
+
+      <button type="submit" class="btn">Create accont</button>
+    </form>
+    <div class="login-link">
+        Al ready have account? <a href="login.html">Login</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Pamoja Health Tracker. Haki zote zimehifadhiwa.</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('signupForm');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+
+      if (password !== confirm) {
+        alert("Nenosiri na uthibitisho havilingani!");
+        return;
+      }
+
+      // Hifadhi data kwenye localStorage
+      const user = {
+        fullname,
+        email,
+        password
+      };
+
+      localStorage.setItem(email, JSON.stringify(user));
+      alert("Usajili umefanikiwa! Sasa unaweza ku-login.");
+      window.location.href = "login.html";
+    });
+  </script>
+
+</body>
+</html>
